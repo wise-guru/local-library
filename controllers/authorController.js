@@ -1,7 +1,7 @@
 const Author = require("../models/author");
 
 //Display list of all AUthors
-exports.list = (req, res) => {
+exports.author_list = (req, res) => {
   res.send("NOT IMPLEMENTED: Author list");
 };
 
