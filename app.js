@@ -1,3 +1,4 @@
+var mongoKey = require("./creds");
 var createError = require("http-errors");
 var express = require("express");
 var path = require("path");
@@ -8,21 +9,26 @@ const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 //Import routes for "catalog" area of site
 const catalogRouter = require("./routes/catalog");
+const compression = require("compression");
+const helmet = require("helmet");
 
 var app = express();
+console.log(mongoKey);
 
 //set up mongoose connection
 const mongoose = require("mongoose");
-const mongoDB =
-  "mongodb+srv://libraryBoss:riggatoni@cluster0.un84xwn.mongodb.net/?retryWrites=true&w=majority";
+const mongoDB = mongoKey;
+
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "ejs");
+app.set("view engine", "pug");
 
+app.use(helmet());
+app.use(compression()); // Compress all routes
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
